@@ -1,85 +1,139 @@
-$(document).ready(function () {
-  $("#work1")
-    .mouseover(function () {
-      $("#overlay").show();
-    })
-    .mouseout(function () {
-      $("#overlay").hide();
-    });
+$(document).ready(function(){
+  $("#work1").mouseover(function(){
+    $("#overlay").show();
+  }).mouseout(function(){
+    $("#overlay").hide();
+  });
 });
-$(document).ready(function () {
-  $("#work2")
-    .mouseover(function () {
-      $("#overlay2").show();
-    })
-    .mouseout(function () {
-      $("#overlay2").hide();
-    });
+$(document).ready(function(){
+  $("#work2").mouseover(function(){
+    $("#overlay2").show();
+  }).mouseout(function(){
+    $("#overlay2").hide();
+  });
 });
-$(document).ready(function () {
-  $("#work3")
-    .mouseover(function () {
-      $("#overlay3").show();
-    })
-    .mouseout(function () {
-      $("#overlay3").hide();
-    });
+$(document).ready(function(){
+  $("#work3").mouseover(function(){
+    $("#overlay3").show();
+  }).mouseout(function(){
+    $("#overlay3").hide();
+  });
 });
-$(document).ready(function () {
-  $("#work4")
-    .mouseover(function () {
-      $("#overlay4").show();
-    })
-    .mouseout(function () {
-      $("#overlay4").hide();
-    });
+$(document).ready(function(){
+  $("#work4").mouseover(function(){
+    $("#overlay4").show();
+  }).mouseout(function(){
+    $("#overlay4").hide();
+  });
+});
+
+$(document).ready(function(){
+  $("#work5").mouseover(function(){
+    $("#overlay5").show();
+  }).mouseout(function(){
+    $("#overlay5").hide();
+  });
+  $("#work6").mouseover(function(){
+    $("#overlay6").show();
+  }).mouseout(function(){
+		$("#overlay6").hide();
+	});
 });
 
 
-function myFunc(itemname, itemprice) {
-  let cartitem = itemname + ":" + itemprice;
-  if (sessionStorage) {
-    // sessionStorage.clear();
-    // Store data
-    let allcarts = sessionStorage.getItem("cartItems");
-    // sessionStorage.setItem("cartItems", username);
-    let cartitems = sessionStorage.getItem("cartItems");
-    if (cartitems === null) {
-      cartitems = [];
-    } else {
-      cartitems = JSON.parse(sessionStorage.getItem("cartItems"));
-    }
-    cartitems.push(JSON.stringify(cartitem));
-    sessionStorage.setItem("cartItems", JSON.stringify(cartitems));
+$(document).ready(function () {
+  if(sessionStorage) {
+    const addeditems=JSON.parse(sessionStorage.getItem("cartItems"));
+    $(".yourcartitems").html('');
+    $(".yourcartitems").append('<h4>Items added to Cart<i class="fa fa-shopping-cart"></i></h4>'+
+              +'<span class="price" style="color:black"></span></h4>');
+    var itemcount=0,itemtotal=0;
+    addeditems.forEach(function(addeditem){
+      var res = addeditem.split(":");
+      var youritem=res[0].replace("\"","").toString();
+      var yourprice=res[1].replace("\"","");
+      itemcount++;
+      yourprice=new Number(yourprice);
+      itemtotal=itemtotal+yourprice;
+       $(".yourcartitems").append('<p><a href="#"> '+youritem+' </a> <span class="price">ksh '+yourprice+' </span></p>');
+      
+    });
+    $(".yourcartitems").append('<hr><p>Total ('+itemcount+') <span class="price" style="color:black"><b>ksh '+itemtotal+'</b></span></p>');
+  }
+});
 
-    $("#myModal").modal({ backdrop: "static" });
-    $("#myModal").modal("show");
-    $("#msg").html("You Have Added " + cartitem + " To Your Cart");
-    $("#modalTitle").html("New Item Added to Cart");
-    $("#myModal").modal("show");
+$(document).ready(function () {
+  $("#proceedbtn").click(function(event){
+  $("#proceedbtn").hide();
+  $("#notshown").hide();
+    if(sessionStorage) {
+      // Store data
+      let loggedusername=sessionStorage.getItem("loggedUser");
+      let logged=sessionStorage.getItem("logged");
 
-    $(".checkoutbtn").click(function (event) {
-      $("#proceedbtn").hide();
-      $("#notshown").hide();
-      if (sessionStorage) {
-        // Store data
-        let loggedusername = sessionStorage.getItem("loggedUser");
-        let logged = sessionStorage.getItem("logged");
-        if (logged === true) {
+        if (logged===true) {
           // alert(loggedusername);
           $("#checkout").slideDown(1000);
-        } else {
-          // alert("Not Logged In");
-          window.location.href = "index2.html";
         }
-      } else {
+        else{
+          // alert("Not Logged In");
+          window.location.href='index2.html';
+        }
+    } else {
         alert("Sorry, your browser do not support session storage.");
-      }
-    });
-  } else {
-    alert("Sorry, your browser do not support session storage.");
+    }
+  	event.preventDefault();
+  });
+});
+
+function myFunc(itemname,itemprice){
+  let cartitem=itemname+":"+itemprice;
+  if(sessionStorage) {
+    // sessionStorage.clear();
+    // Store data
+      let allcarts = sessionStorage.getItem("cartItems");
+       // sessionStorage.setItem("cartItems", username);
+        let cartitems= sessionStorage.getItem("cartItems");
+            if (cartitems===null) {
+              cartitems=[];
+            }
+            else{
+              cartitems=JSON.parse(sessionStorage.getItem("cartItems"));
+            }
+          cartitems.push(JSON.stringify(cartitem));
+          sessionStorage.setItem("cartItems",JSON.stringify(cartitems));
+
+      $('#myModal').modal({"backdrop":"static"});
+      $("#myModal").modal('show');
+      $("#msg").html("You Have Added "+cartitem+" To Your Cart");
+      $("#modalTitle").html("New Item Added to Cart");
+      $("#myModal").modal('show');
+
+        $(".checkoutbtn").click(function(event){
+          $("#proceedbtn").hide();
+          $("#notshown").hide();
+            if(sessionStorage) {
+              // Store data
+              let loggedusername=sessionStorage.getItem("loggedUser");
+              let logged=sessionStorage.getItem("logged");
+                if (logged===true) {
+                  // alert(loggedusername);
+                  $("#checkout").slideDown(1000);
+
+                }
+                else{
+                  // alert("Not Logged In");
+                  window.location.href='index2.html';
+                }
+            } else {
+                alert("Sorry, your browser do not support session storage.");
+            }
+        });
   }
-}
+  else {
+        alert("Sorry, your browser do not support session storage.");
+  }
+};
 
 // function myFunc2(){
 //   var checkBox2 = document.getElementById("cart2")
@@ -126,15 +180,16 @@ function myFunc(itemname, itemprice) {
 
 
 
+
+
+
+
+
 function sendMsg() {
-  var name = $("#NAME").val();
-  var email = $("#EMAIL").val();
-  var message = $("#MESSAGE").val();
-  if (name !== "" && email !== "" && message !== "") {
-    alert(
-      "Hey " +
-        name +
-        "! Thank you for your message! We will review it and give you feedback. Check your email for our feedback soon."
-    );
+	var name = $("#NAME").val();
+	var email = $("#EMAIL").val();
+	var message = $("#MESSAGE").val();
+	if (name !== "" && email !== "" && message !== ""){
+		alert("Hey " + name + "! Thank you for your message! We will review it and give you feedback. Check your email for our feedback soon.")
   }
-}
+};
